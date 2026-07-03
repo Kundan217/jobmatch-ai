@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JobMatch AI</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="workspace">
+      <div class="panel intro">
+        <p class="eyebrow">Resume Matcher</p>
+        <h1>JobMatch AI</h1>
+        <p>Upload a resume and paste a job description to get a semantic match score, skill gaps, and ATS suggestions.</p>
+      </div>
+
+      <form class="panel form" action="/analyze" method="post" enctype="multipart/form-data">
+        <label>
+          <span>Resume PDF</span>
+          <input type="file" name="resume" accept="application/pdf" required>
+        </label>
+        <label>
+          <span>Job Description</span>
+          <textarea name="job_description" rows="13" placeholder="Paste the role title, responsibilities, and required skills..." required></textarea>
+        </label>
+        <button type="submit">Analyze Match</button>
+      </form>
+    </section>
+
+    <section class="history">
+      <div class="section-head">
+        <h2>Recent Analyses</h2>
+        <a href="/history">JSON</a>
+      </div>
+      {% if history %}
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Resume</th>
+                <th>Job</th>
+                <th>Match</th>
+                <th>ATS</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in history %}
+              <tr>
+                <td><a href="/report/{{ item.id }}">{{ item.resume_name }}</a></td>
+                <td>{{ item.job_title }}</td>
+                <td>{{ item.match_score }}%</td>
+                <td>{{ item.ats_score }}%</td>
+                <td>{{ item.created_at }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="empty">No analyses yet.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

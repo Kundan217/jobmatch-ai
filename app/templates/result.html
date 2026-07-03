@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JobMatch AI Report</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar">
+      <a href="/">New Analysis</a>
+      <a href="/report/{{ report.id }}">JSON Report</a>
+    </nav>
+
+    <section class="result-grid">
+      <article class="metric">
+        <span>Match Score</span>
+        <strong>{{ report.match_score }}%</strong>
+      </article>
+      <article class="metric">
+        <span>ATS Score</span>
+        <strong>{{ report.ats_score }}%</strong>
+      </article>
+      <article class="metric wide">
+        <span>Resume</span>
+        <strong>{{ report.resume_name }}</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">{{ report.job_title }}</p>
+      <h1>Analysis Result</h1>
+      <p>{{ report.resume_summary }}</p>
+    </section>
+
+    <section class="columns">
+      <article class="panel">
+        <h2>Matching Skills</h2>
+        <div class="chips good">
+          {% for skill in report.matching_skills %}
+            <span>{{ skill }}</span>
+          {% else %}
+            <p>No direct skill matches found.</p>
+          {% endfor %}
+        </div>
+      </article>
+      <article class="panel">
+        <h2>Missing Skills</h2>
+        <div class="chips warn">
+          {% for skill in report.missing_skills %}
+            <span>{{ skill }}</span>
+          {% else %}
+            <p>No obvious required skills are missing.</p>
+          {% endfor %}
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>ATS Suggestions</h2>
+      <ul class="suggestions">
+        {% for suggestion in report.suggestions %}
+          <li>{{ suggestion }}</li>
+        {% else %}
+          <li>The resume has the core ATS basics covered for this role.</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
